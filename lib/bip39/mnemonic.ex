@@ -1,7 +1,7 @@
 defmodule Bip39.Mnemonic do
   alias Bip39.Mnemonic.{Decoder, Encoder}
 
-  @default_lang :en
+  @default_lang :english
 
   def generate(entropy_size), do: generate(entropy_size, @default_lang)
   def generate(entropy_size, lang) do

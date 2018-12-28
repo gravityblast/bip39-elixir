@@ -1,12 +1,24 @@
 defmodule Bip39.Words do
   alias Bip39.Words.{
     English,
-    Japanese
+    Japanese,
+    Korean,
+    Spanish,
+    ChineseSimplified,
+    ChineseTraditional,
+    French,
+    Italian
   }
 
   @languages [
-    en: English,
-    jp: Japanese,
+    english: English,
+    japanese: Japanese,
+    korean: Korean,
+    spanish: Spanish,
+    chinese_simplified: ChineseSimplified,
+    chinese_traditional: ChineseTraditional,
+    french: French,
+    italian: Italian
   ]
 
   for {lang, mod} <- @languages do
