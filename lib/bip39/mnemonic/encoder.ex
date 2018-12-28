@@ -1,5 +1,5 @@
 defmodule Bip39.Mnemonic.Encoder do
-  alias Bip39.Words.English
+  alias Bip39.Words
   alias Bip39.Mnemonic.Utils
 
   defmacrop is_valid_entropy(size) do
@@ -8,15 +8,15 @@ defmodule Bip39.Mnemonic.Encoder do
     end
   end
 
-  def encode(entropy) when not is_valid_entropy(bit_size(entropy)),
+  def encode(entropy, _) when not is_valid_entropy(bit_size(entropy)),
     do: {:error, :invalid_entropy_size}
 
-  def encode(entropy) do
+  def encode(entropy, lang) do
     mnemonic =
       entropy
       |> add_checksum()
       |> split_indexes()
-      |> indexes_to_words()
+      |> indexes_to_words(lang)
       |> Enum.join(" ")
 
     {:ok, mnemonic}
@@ -34,7 +34,7 @@ defmodule Bip39.Mnemonic.Encoder do
     split_indexes(t, acc ++ [h])
   end
 
-  defp indexes_to_words(indexes) do
-    Enum.map(indexes, &English.at/1)
+  defp indexes_to_words(indexes, lang) do
+    Enum.map(indexes, &(Words.at(lang, &1)))
   end
 end

@@ -1,5 +1,7 @@
 defmodule Bip39.Words.English do
-  @words ~w[
+  use Bip39.WordsList
+
+  defwords ~w[
     abandon
     ability
     able
@@ -2049,10 +2051,4 @@ receive
     zone
     zoo
   ]
-
-  def at(i), do: Enum.at(@words, i)
-
-  def find_index(word) do
-    Enum.find_index(@words, &(&1 == word))
-  end
 end

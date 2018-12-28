@@ -10,7 +10,7 @@ defmodule Bip39.Mnemonic.EncoderTest do
         entr
         |> String.upcase()
         |> Base.decode16!()
-        |> Encoder.encode()
+        |> Encoder.encode(:en)
 
       assert mnemonic == exp_mnemonic
     end)
@@ -19,12 +19,12 @@ defmodule Bip39.Mnemonic.EncoderTest do
   test "encode validation" do
     for i <- [127, 129, 255, 257] do
       entropy = make_bytes(i)
-      assert {:error, :invalid_entropy_size} = Encoder.encode(entropy)
+      assert {:error, :invalid_entropy_size} = Encoder.encode(entropy, :en)
     end
 
     for i <- [128, 160, 192, 224, 256] do
       entropy = make_bytes(i)
-      assert {:ok, _} = Encoder.encode(entropy)
+      assert {:ok, _} = Encoder.encode(entropy, :en)
     end
   end
 

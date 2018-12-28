@@ -1,10 +1,10 @@
 defmodule Bip39.Mnemonic.Decoder do
-  alias Bip39.Words.English
+  alias Bip39.Words
   alias Bip39.Mnemonic.Utils
 
-  def decode(mnemonic) when is_binary(mnemonic) do
+  def decode(mnemonic, lang) when is_binary(mnemonic) do
     with {:ok, words} <- mnemonic_to_words(mnemonic),
-         {:ok, indexes} <- words_to_indexes(words),
+         {:ok, indexes} <- words_to_indexes(words, lang),
          {:ok, entropy} <- indexes_to_entropy(indexes) do
       {:ok, entropy}
     end
@@ -20,19 +20,19 @@ defmodule Bip39.Mnemonic.Decoder do
     end
   end
 
-  defp words_to_indexes(words) do
-    words_to_indexes(words, [])
+  defp words_to_indexes(words, lang) do
+    words_to_indexes(words, lang, [])
   end
 
-  defp words_to_indexes([], indexes), do: {:ok, indexes}
+  defp words_to_indexes([], _, indexes), do: {:ok, indexes}
 
-  defp words_to_indexes([w | ws], indexes) do
-    case English.find_index(w) do
+  defp words_to_indexes([w | ws], lang, indexes) do
+    case Words.find_index(lang, w) do
       nil ->
         {:error, :invalid_word, w}
 
       index ->
-        words_to_indexes(ws, indexes ++ [index])
+        words_to_indexes(ws, lang, indexes ++ [index])
     end
   end
 
