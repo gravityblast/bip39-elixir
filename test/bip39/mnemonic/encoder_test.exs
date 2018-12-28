@@ -5,14 +5,16 @@ defmodule Bip39.Mnemonic.EncoderTest do
   alias Bip39.Mnemonic.Encoder
 
   test "encode" do
-    Enum.map(get_in(vectors(), ["english"]), fn [entr, exp_mnemonic, _, _] ->
-      {:ok, mnemonic} =
-        entr
-        |> String.upcase()
-        |> Base.decode16!()
-        |> Encoder.encode(:english)
+    Enum.map(vectors(), fn {lang, vectors} ->
+      Enum.map(vectors, fn [entr, exp_mnemonic, _, _] ->
+        {:ok, mnemonic} =
+          entr
+          |> String.upcase()
+          |> Base.decode16!()
+          |> Encoder.encode(String.to_atom(lang))
 
-      assert mnemonic == exp_mnemonic
+        assert mnemonic == exp_mnemonic
+      end)
     end)
   end
 
